@@ -1,53 +1,3 @@
-#links to data: https://earthquaketrack.com/r/utah/recent (recent quakes chart) and http://quake.utah.edu/publications/reports/a-uniform-moment-magnitude-earthquake-catalog-and-background-seismicity-rates-for-the-wasatch-front-and-surrounding-utah-region-appendix-e-in-working-group-on-utah-earthquake-probabilities-wguep (historical quakes map)
-
-#recent quakes chart code and dataset
-
-library(tidyverse)
-library(scales)
-df <- read.csv('latest_quakes.csv')
-df$date <- as.Date(with(df, paste(year, month, day, sep="-")), "%Y-%m-%d")
-b <- ggplot(df, (aes)(date))
-b + geom_bar() + 
-  ggtitle("Recent Utah Quakes")
-
-year,month,day,magnitude,depth_km,city,state
-2017,11,01,1.7,13,Snyderville, Utah
-2017,11,01,2.0,13,Snyderville, Utah
-2017,11,01,1.9,6,Fillmore, Utah
-2017,10,31,2.0,6,Tremonton, Utah
-2017,10,29,1.7,6,Junction, Utah
-2017,10,29,1.6,6,Junction, Utah
-2017,10,27,1.8,16,Manti, Utah
-2017,10,27,2.2,8,Junction, Utah
-2017,10,25,1.5,8,Beaver, Utah
-2017,10,24,1.5,7,Helper, Utah
-2017,10,24,2.0,0,Perry, Utah
-
-#historical quakes map code and dataset
-
-install.packages("devtools")
-devtools::install_github("dgrtwo/gganimate")
-install.packages("magick")
-library(magick)
-library(tidyverse)
-library(gganimate)
-library(ggmap)
-df <- read_csv("quakes.csv")
-utah_map <- get_map(location = "Utah", 
-                    zoom = 6, 
-                    maptype = "toner-lite")
-p <- ggmap(utah_map) +
-  geom_point(data = df, 
-             aes(x = Long, y = Lat, frame = Year, size = BEM, cumulative = TRUE), 
-             alpha = .3) +
-  geom_point(data = df, 
-             aes(x = Long, y = Lat, frame = Year, size = BEM), 
-             col = "red") +
-  theme_void() +
-  theme(legend.position = "bottom") +
-  labs(size = "Magnitude")
-gganimate(p, filename = "/Downloads/quakes.gif")
-
 BEM,Long,Lat,Depth,Year,Mo,Day,Hr,Min,Sec,sigM,Round,Mag,Type,N*
 6.63,-112.4,38.5,0.0,1901,11,14,4,39,0.0,0.287,0.01,Mpred|Xnon,0.786,
 6.59,-112.795,41.658,9.0,1934,3,12,15,5,48.0,0.3,0.01,Mobs,0.769,
@@ -5437,4 +5387,3 @@ BEM,Long,Lat,Depth,Year,Mo,Day,Hr,Min,Sec,sigM,Round,Mag,Type,N*
 2.3,-110.72,43.22,7.0,2000,4,20,15,9,17.0,0.15,0.10,M~|MDUSBR,0.936,
 2.3,-114.84,36.0,5.0,2009,5,14,9,30,57.0,0.15,0.10,M~|MLREN,0.936,
 2.06,-111.3,43.0,33.0,1963,10,31,8,8,52.0,0.401,0.01,Mpred|Xi,0.625,
-
