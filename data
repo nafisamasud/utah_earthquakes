@@ -6,9 +6,10 @@ library(tidyverse)
 library(scales)
 df <- read.csv('latest_quakes.csv')
 df$date <- as.Date(with(df, paste(year, month, day, sep="-")), "%Y-%m-%d")
-b <- ggplot(df, (aes)(date))
-b + geom_bar() + 
-  ggtitle("Recent Utah Quakes")
+ggplot(df, aes(x=date)) + 
+  geom_bar(colour="black", fill="#DD8888", stat="count") +
+  ggtitle("Recent Utah Quakes") + 
+  theme_minimal()
 
 year,month,day,magnitude,depth_km,city,state
 2017,11,01,1.7,13,Snyderville, Utah
